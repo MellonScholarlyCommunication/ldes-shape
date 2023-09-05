@@ -1,0 +1,82 @@
+@prefix as: <https://www.w3.org/ns/activitystreams#> .
+@prefix ex: <http://example.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:ActivityNotificationShape
+    a sh:NodeShape ;
+    sh:targetClass as:Create, as:Update, as:Remove, as:Announce, as:Offer, as:Accept, as:Reject, as:Undo ;
+    sh:property [
+        sh:path as:actor ;
+        sh:node ex:AgentShape ;
+        sh:minCount 1
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:node ex:AgentShape ;
+        sh:minCount 0
+    ] ;
+    sh:property [
+        sh:path as:object ;
+        sh:node ex:ObjectShape ;
+        sh:minCount 1
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:node ex:AgentShape ;
+        sh:minCount 0
+    ] ;
+   sh:property [
+        sh:path as:context ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0
+    ] ;
+    sh:property [
+        sh:path as:inReplyTo ;
+        sh:nodeKind sh:IRI ;
+        sh:targetObjectsOf as:Create, as:Update, as:Remove, as:Announce, as:Offer, as:Accept, as:Reject, as:Undo ;
+        sh:minCount 0
+    ] .
+
+ex:AgentShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path as:inbox ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0
+    ] ;
+    sh:property [
+        sh:path as:name ;
+        sh:nodeKind sh:Literal ;
+        sh:minCount 0
+    ] .
+
+ex:ObjectShape
+    a sh:NodeShape ;
+    sh:xone (
+        [ sh:node ex:ArticleShape ]
+        [ sh:node ex:RelationshipShape ]
+        [ sh:node ex:ActivityNotificationShape ]
+    ) .
+
+ex:ArticleShape
+    a sh:NodeShape ;
+    sh:class as:Article .
+
+ex:RelationshipShape
+    a sh:NodeShape ;
+    sh:class as:Relationship ;
+    sh:property [
+        sh:path as:subject ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1
+    ] ;
+    sh:property [
+        sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1
+    ] ;
+    sh:property [
+        sh:path as:relationship ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1
+    ] .
